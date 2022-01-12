@@ -1,12 +1,12 @@
 import express from "express";
-import Vehicle from "../models/vehicle.js";
+import Vehicle from "../../models/vehicle.js";
 import _ from "lodash";
-import upload from "../startup/storage.js";
+import upload from "../../startup/storage.js";
 import fs from "fs";
 
 const router = express.Router();
 
-router.get("/v", async (req, res) => {
+router.get("/", async (req, res) => {
   let vehicles = [];
   if (req.query.q)
     vehicles = await Vehicle.find({
@@ -16,17 +16,19 @@ router.get("/v", async (req, res) => {
   res.send(vehicles);
 });
 
-router.get("/v/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
   const vehicle = await Vehicle.findOne({ id: id });
   if (!vehicle) return res.status(404).send("Vehicle not found");
   res.status(200).send(vehicle);
 });
 
-router.post("/v", [upload.array("images")], async (req, res) => {
+router.post("/", [upload.array("images")], async (req, res) => {
   const data = _.pick(req.body, [
     "name",
-    "capacity",
+    "passenger_capacity",
+    "child_seat_capacity",
+    "luggage_capacity",
     "baseprice",
     "price0to5",
     "price5to10",
@@ -66,7 +68,7 @@ router.post("/v", [upload.array("images")], async (req, res) => {
   }
 });
 
-router.put("/v", upload.array("images"), async (req, res) => {
+router.put("/", upload.array("images"), async (req, res) => {
   const vehicle = await Vehicle.findOne({ id: req.body.id });
   if (!vehicle) return res.status(404).send({ error: "Vehicle not found" });
 
@@ -96,10 +98,16 @@ router.put("/v", upload.array("images"), async (req, res) => {
   res.status(200).send({ success: vehicle.name + " updated successfully" });
 });
 
-router.delete("/v/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const vehicle = await Vehicle.findOneAndDelete({ id: req.params.id });
   if (!vehicle) return res.status(404).send("Vehicle not found");
-  res.status(200).send(vehicle.name + " deleted successfully!");
+  if (vehicle.photos.length > 0) {
+    vehicle.photos.forEach((e) =>
+      fs.rmSync(`./public/images/${vehicle.id}/${e.filename}`)
+    );
+    fs.rmdirSync(`./public/images/${vehicle.id}`);
+  }
+  res.status(200).send(vehicle);
 });
 
 export default router;
