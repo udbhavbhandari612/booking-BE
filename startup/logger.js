@@ -14,6 +14,9 @@ export function logger() {
         year: "numeric",
       }
     );
+    if (!fs.existsSync("./logs")) {
+      fs.mkdirSync("./logs");
+    }
     fs.appendFileSync(
       "./logs/errors.log",
       `${timestamp} : ${JSON.stringify(ex.message)}\n`
@@ -37,6 +40,9 @@ export function log(log) {
       year: "numeric",
     }
   );
+  if (!fs.existsSync("./logs")) {
+    fs.mkdirSync("./logs");
+  }
   fs.appendFileSync("./logs/logs.log", `${timestamp} : ${log}\n`);
 }
 
