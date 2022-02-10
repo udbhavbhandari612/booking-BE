@@ -6,6 +6,7 @@ const driverSchema = new mongoose.Schema({
   contact_number: { type: String, required: true },
   email: { type: String, required: true },
   photo_url: { type: String },
+  vehicle_details: { type: String },
   created_at: { type: Date, default: Date.now() },
 });
 

@@ -24,7 +24,8 @@ export default async function (req, res, next) {
     req.body.vehicle_details.total_fare +
     (req.body.vehicle_details.child_seats || 0) * 5 +
     (req.body.toll_price || 0) +
-    (req.body.rush_hour_price || 0);
+    (req.body.morning_rush_hour_price || 0) +
+    (req.body.night_rush_hour_price || 0);
   transactionRequestType.setAmount(
     `${Math.ceil(total_fare + (total_fare * 20) / 100)}.00`
   );
@@ -50,7 +51,8 @@ export default async function (req, res, next) {
     req.result.price_breakup = {
       vehicle_fare: req.body.vehicle_details.total_fare,
       toll_price: req.body.toll_price,
-      rush_hour_price: req.body.rush_hour_price,
+      morning_rush_hour_price: req.body.morning_rush_hour_price,
+      night_rush_hour_price: req.body.night_rush_hour_price,
       child_seats_price: (req.body.vehicle_details.child_seats || 0) * 5,
       gratuity: total_fare / 5,
       total_fare: total_fare + total_fare / 5,

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { transporter } from "../helpers/mailTransporter.js";
+import bookingConfirm from "../templates/bookingConfirm.js";
+import bookingMade from "../templates/bookingMade.js";
 import Vehicle from "./vehicle.js";
 
 const bookingSchema = new mongoose.Schema({
@@ -23,47 +25,41 @@ const bookingSchema = new mongoose.Schema({
   price_breakup: { type: Object },
   createdAt: { type: Date, default: Date.now() },
   status: { type: String, default: "in-progress" },
-  pickup_datettime: { type: Date, required: true },
+  pickupdatetime: { type: Date, required: true },
   driver: { type: mongoose.SchemaTypes.ObjectId, ref: "Driver" },
+  rideType: { type: String },
 });
 
 bookingSchema.methods.sendBookingConfirmMail = async function () {
+  const vehicle = await Vehicle.findOne({ _id: this.vehicle_details });
   await transporter.sendMail({
     from: '"Booking App" <no-reply@leetwolf.com>',
     to: `${this.contact_details.email}`,
-    subject: "Booking Confirmed",
-    text: `Your booking has been made succesfully with booking# ${this.booking_id} and transaction# ${this.transaction_id}`, // plain text body
+    subject: `Airport Limo Service - Booking Request No: ${this.booking_id}`,
+    html: `${bookingMade(this, vehicle)}`,
   });
 };
 
 bookingSchema.methods.sendBookingApprovedMail = async function (driver) {
+  const vehicle = await Vehicle.findOne({ _id: this.vehicle_details });
   await transporter.sendMail({
     from: '"Booking App" <no-reply@leetwolf.com>',
     to: `${this.contact_details.email}`,
-    subject: `Booking Approved - ${this.booking_id}`,
-    html: `Your booking with booking# ${this.booking_id} has been approved successfully.<br/><br/>
-    Driver details<br/>
-    ------------------------------<br/>
-    Name:       <b>${driver.name}</b><br/>
-    Contact No: <b>${driver.contact_number}</b><br/>
-    Email:      <b>${driver.email}</b><br/>
-    `,
+    subject: `Airport Limo Service - Booking Confirmation No: ${this.booking_id}`,
+    html: `${bookingConfirm(this, driver, vehicle)}`,
   });
 
-  const vehicle = await Vehicle.findOne({ _id: this.vehicle_details }, [
-    "name",
-  ]);
   await transporter.sendMail({
     from: '"Booking App" <no-reply@leetwolf.com>',
     to: `${driver.email}`,
     subject: `New Booking - ${this.booking_id}`,
-    html: `Your have a new booking with booking# ${this.booking_id}.<br/><br/>
+    html: `You have a new booking with booking# ${this.booking_id}.<br/><br/>
     <b>Passenger details</b><br/>
     ----------------------------------<br/>
     Name:                  <b>${this.contact_details.fullname}</b><br/>
     Contact No:            <b>${this.contact_details.phone}</b><br/>
     Email:                 <b>${this.contact_details.email}</b><br/>
-    Pickup Date and Time:  <b>${this.pickup_datettime}</b><br/>
+    Pickup Date and Time:  <b>${this.pickupdatetime}</b><br/>
     <br/><br/>
     <b>Trip details</b><br/>
     ---------------------------------<br/>

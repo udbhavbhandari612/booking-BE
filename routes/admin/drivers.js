@@ -19,7 +19,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", [driverStorage.single("image")], async (req, res) => {
-  let data = _.pick(req.body, ["name", "age", "contact_number", "email"]);
+  let data = _.pick(req.body, [
+    "name",
+    "age",
+    "contact_number",
+    "email",
+    "vehicle_details",
+  ]);
 
   // const temp = await Driver.findOne({ id: req.body._id });
   // if (temp) return res.status(400).json("Driver already exists");
@@ -44,7 +50,13 @@ router.put("/", async (req, res) => {
   const driver = await Driver.findOne({ id: req.body._id });
   if (!driver) return res.status(404).send({ error: "Driver not found" });
 
-  const data = _.pick(req.body, ["name", "age", "contact_number", "email"]);
+  const data = _.pick(req.body, [
+    "name",
+    "age",
+    "contact_number",
+    "email",
+    "vehicle_details",
+  ]);
 
   driver.set({ ...data });
 

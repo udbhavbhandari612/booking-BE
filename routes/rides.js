@@ -23,15 +23,27 @@ router.post("/", [distanceMatrix], async (req, res) => {
   payload.toll_price = airport?.toll_price || 0;
 
   //set rush hour fare
-  const rushHour = await RushHour.findOne();
+  const morningRushHour = await RushHour.findOne({ type: "morning" });
+  const nightRushHour = await RushHour.findOne({ type: "night" });
   if (
     parseInt(payload.time.split(":")[0]) >
-      parseInt(rushHour.start_time.split(":")[0]) &&
+      parseInt(morningRushHour.morning_start_time.split(":")[0]) &&
     parseInt(payload.time.split(":")[0]) <
-      parseInt(rushHour.end_time.split(":")[0])
+      parseInt(morningRushHour.morning_end_time.split(":")[0]) &&
+    morningRushHour.mornig_start_time.includes("AM")
   )
-    payload.rush_hour_price = parseInt(rushHour.fare);
-  else payload.rush_hour_price = 0;
+    payload.morning_rush_hour_price = parseInt(morningRushHour.morning_fare);
+  else payload.morning_rush_hour_price = 0;
+
+  if (
+    parseInt(payload.time.split(":")[0]) >
+      parseInt(nightRushHour.night_start_time.split(":")[0]) &&
+    parseInt(payload.time.split(":")[0]) <
+      parseInt(nightRushHour.night_end_time.split(":")[0]) &&
+    nightRushHour.night_start_time.includes("PM")
+  )
+    payload.night_rush_hour_price = parseInt(nightRushHour.night_fare);
+  else payload.night_rush_hour_price = 0;
 
   payload.vehicles = vehicles.map((v) => {
     let total_fare = v.baseprice;

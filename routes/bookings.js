@@ -10,13 +10,13 @@ router.post("/", [makePayment], async (req, res) => {
     const booking = new Booking({
       booking_id: Date.now() + req.result.transactionResponse.transId,
       transaction_id: req.result.transactionResponse.transId,
-      ..._.pick(req.body, ["distance", "duration", "contact_details"]),
+      ..._.pick(req.body, ["distance", "duration", "contact_details", "rideType"]),
       price_breakup: req.result.price_breakup,
       vehicle_details: req.body.vehicle_details._id,
       createdAt: Date.now(),
       from: req.body.origin_address,
       to: req.body.destination_address,
-      pickup_datettime: new Date(
+      pickupdatetime: new Date(
         req.body.date.split("T")[0] + " " + req.body.time
       ),
     });
