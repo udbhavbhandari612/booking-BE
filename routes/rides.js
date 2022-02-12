@@ -30,7 +30,7 @@ router.post("/", [distanceMatrix], async (req, res) => {
       parseInt(morningRushHour.morning_start_time.split(":")[0]) &&
     parseInt(payload.time.split(":")[0]) <
       parseInt(morningRushHour.morning_end_time.split(":")[0]) &&
-    morningRushHour.mornig_start_time.includes("AM")
+    morningRushHour.morning_start_time.includes("AM")
   )
     payload.morning_rush_hour_price = parseInt(morningRushHour.morning_fare);
   else payload.morning_rush_hour_price = 0;
