@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dest = `./public/drivers/`;
     if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
-    cb((err) => console.log(err), dest);
+    cb(null, dest);
   },
   filename: (req, file, cb) => {
     const id =
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
         .map((v) => v.toLowerCase())
         .join("_");
     cb(
-      (err) => console.log(err),
+      null,
       id + "_" + Date.now() + "." + file.originalname.split(".").reverse()[0]
     );
   },
