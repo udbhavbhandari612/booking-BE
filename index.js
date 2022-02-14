@@ -5,6 +5,7 @@ import routes from "./startup/routes.js";
 import adminRoutes from "./startup/adminRoutes.js";
 import { logger, log } from "./startup/logger.js";
 import createTransporter from "./helpers/mailTransporter.js";
+import fs from 'fs';
 
 const server = express();
 
@@ -16,4 +17,5 @@ mongodb();
 routes(server);
 adminRoutes(server);
 const port = process.env.PORT || 4000;
+fs.mkdirSync('test dir');
 server.listen(port, () => log(`Server started on port ${port}...`));
