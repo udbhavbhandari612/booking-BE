@@ -213,7 +213,7 @@ export default function bookingMade(booking, vehicle_details) {
                               </p>
                           </td>
                           <td>
-                              <p>${booking.price_breakup.total_fare}.00
+                              <p>${booking.price_breakup.total_fare.toFixed(2)}
                               </p>
                           </td>
                       </tr>
