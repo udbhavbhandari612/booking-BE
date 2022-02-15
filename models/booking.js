@@ -57,8 +57,6 @@ bookingSchema.methods.sendBookingApprovedMail = async function (driver) {
     <b>Passenger details</b><br/>
     ----------------------------------<br/>
     Name:                  <b>${this.contact_details.fullname}</b><br/>
-    Contact No:            <b>${this.contact_details.phone}</b><br/>
-    Email:                 <b>${this.contact_details.email}</b><br/>
     Pickup Date and Time:  <b>${this.pickupdatetime}</b><br/>
     <br/><br/>
     <b>Trip details</b><br/>
