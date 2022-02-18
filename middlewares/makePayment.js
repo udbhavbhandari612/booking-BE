@@ -25,7 +25,8 @@ export default async function (req, res, next) {
     (req.body.vehicle_details.child_seats || 0) * 5 +
     (req.body.toll_price || 0) +
     (req.body.morning_rush_hour_price || 0) +
-    (req.body.night_rush_hour_price || 0);
+    (req.body.night_rush_hour_price || 0) +
+    (req.body.meet_and_greet ? 5 : 0);
   transactionRequestType.setAmount(
     `${Math.ceil(total_fare + (total_fare * 20) / 100)}.00`
   );
@@ -56,6 +57,7 @@ export default async function (req, res, next) {
       child_seats_price: (req.body.vehicle_details.child_seats || 0) * 5,
       gratuity: total_fare / 5,
       total_fare: total_fare + total_fare / 5,
+      meet_and_greet: req.body.meet_and_greet ? 5 : 0,
     };
     next();
   });
