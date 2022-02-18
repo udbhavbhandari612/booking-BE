@@ -169,7 +169,7 @@ export default function bookingMade(booking, vehicle_details) {
                           </td>
                       </tr>
                       ${
-                        booking.price_breakup.toll_price &&
+                        booking.price_breakup.toll_price ?
                         `<tr>
                               <td>
                                   <p>Airport Toll
@@ -180,6 +180,21 @@ export default function bookingMade(booking, vehicle_details) {
                                   </p>
                               </td>
                           </tr>`
+                          : ''
+                      }
+                      ${
+                        booking.price_breakup.meet_and_greet ?
+                        `<tr>
+                              <td>
+                                  <p>Airport Toll
+                                  </p>
+                              </td>
+                              <td>
+                                  <p>${booking.price_breakup.meet_and_greet}.00
+                                  </p>
+                              </td>
+                          </tr>`
+                          : ''
                       }
                       <tr>
                           <td>
