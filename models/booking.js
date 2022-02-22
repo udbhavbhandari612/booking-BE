@@ -61,11 +61,12 @@ bookingSchema.methods.sendBookingApprovedMail = async function (driver) {
     <br/><br/>
     <b>Trip details</b><br/>
     ---------------------------------<br/>
-    From:     <b>${this.from}</b><br/>
-    To:       <b>${this.to}</b><br/>
-    Distance: <b>${this.distance.text}</b><br/>
-    Duration: <b>${this.duration.text}</b><br/>
-    Vehicle:  <b>${vehicle.name}</b><br/>
+    From:         <b>${this.from}</b><br/>
+    To:           <b>${this.to}</b><br/>
+    Distance:     <b>${this.distance.text}</b><br/>
+    Duration:     <b>${this.duration.text}</b><br/>
+    Vehicle:      <b>${vehicle.name}</b><br/>
+    Plate Number: <b>${driver.vehicle_details}</b><br/>
     `,
   });
 };
