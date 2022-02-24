@@ -1,6 +1,6 @@
 # booking-BE
 
-# How to start
+## How to start
 
   1. `npm run start` for PROD mongoDB connection
   2. `npm run start-dev` for local mongoDB connection
