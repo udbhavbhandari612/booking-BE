@@ -58,7 +58,7 @@ router.post("/", [upload.array("images")], async (req, res) => {
   if (req.files.length > 0) {
     const photos = [];
     req.files.forEach((v) => {
-      let path = `http://${req.hostname}:4000${v.destination
+      let path = `http://${req.hostname}${v.destination
         .replace(`.`, "")
         .replace("/public", "")}${v.filename}`;
       photos.push({ ..._.pick(v, ["filename", "size", "mimetype"]), path });
