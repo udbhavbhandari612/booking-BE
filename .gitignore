@@ -1,5 +1,5 @@
 /node_modules
 .env
-/logs
-/public/images/*
-/public/drivers/*
+logs
+public
+lib

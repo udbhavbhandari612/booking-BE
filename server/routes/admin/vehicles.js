@@ -30,10 +30,15 @@ router.post("/", [upload.array("images")], async (req, res) => {
     "child_seat_capacity",
     "luggage_capacity",
     "baseprice",
-    "price0to5",
-    "price5to10",
-    "price10to15",
-    "price15plus",
+    "price0to10",
+    "price10to25",
+    "price25to40",
+    "price40to60",
+    "price60to80",
+    "price80to100",
+    "price100to120",
+    "price120to150",
+    "price150plus",
   ]);
 
   const id = data.name

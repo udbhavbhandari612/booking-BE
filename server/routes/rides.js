@@ -47,18 +47,65 @@ router.post("/", [distanceMatrix], async (req, res) => {
 
   payload.vehicles = vehicles.map((v) => {
     let total_fare = v.baseprice;
-    if (distance > 0 && distance <= 5) total_fare += v.price0to5 * distance;
-    if (distance > 5 && distance <= 10)
-      total_fare += v.price0to5 * 5 + v.price5to10 * (distance - 5);
-    if (distance > 10 && distance <= 15)
+    if (distance > 0 && distance <= 10) total_fare += v.price0to10 * distance;
+    else if (distance > 10 && distance <= 25)
+      total_fare += v.price0to10 * 10 + v.price10to20 * (distance - 10);
+    else if (distance > 25 && distance <= 40)
       total_fare +=
-        v.price0to5 * 5 + v.price5to10 * 5 + v.price10to15 * (distance - 10);
-    if (distance > 15)
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * (distance - 25);
+    else if (distance > 40 && distance <= 60)
       total_fare +=
-        v.price0to5 * 5 +
-        v.price5to10 * 5 +
-        v.price10to15 * 5 +
-        v.price15plus * (distance - 15);
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * (distance - 40);
+    else if (distance > 60 && distance <= 80)
+      total_fare +=
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * 20 +
+        v.price60to80 * (distance - 60);
+    else if (distance > 80 && distance <= 100)
+      total_fare +=
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * 20 +
+        v.price60to80 * 20 +
+        v.price80to100 * (distance - 80);
+    else if (distance > 100 && distance <= 120)
+      total_fare +=
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * 20 +
+        v.price60to80 * 20 +
+        v.price80to100 * 20 +
+        v.price100to120 * (distance - 100);
+    else if (distance > 120 && distance <= 150)
+      total_fare +=
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * 20 +
+        v.price60to80 * 20 +
+        v.price80to100 * 20 +
+        v.price100to120 * 20 +
+        v.price120to150 * (distance - 120);
+    else if (distance > 150)
+      total_fare +=
+        v.price0to10 * 10 +
+        v.price10to25 * 15 +
+        v.price25to40 * 15 +
+        v.price40to60 * 20 +
+        v.price60to80 * 20 +
+        v.price80to100 * 20 +
+        v.price100to120 * 20 +
+        v.price120to150 * 30 +
+        v.price150plus * (distance - 150);
     return {
       total_fare,
       ..._.pick(v, [

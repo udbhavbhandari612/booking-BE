@@ -3,17 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "node index.js",
-    "start": "node index.js production",
+    "start": "npm-run-all build prod",
+    "start-dev": "npm-run-all build dev",
+    "build": "babel server -d lib",
+    "prod": "node lib/index.js production",
+    "dev": "node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
-  "author": "",
+  "author": "Leetwolf",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/runtime": "^7.17.2",
     "@googlemaps/google-maps-services-js": "^3.3.2",
     "authorizenet": "^1.0.8",
+    "babel-polyfill": "^6.26.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -22,12 +30,14 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.0.12",
     "multer": "^1.4.3",
-    "nodemailer": "^6.7.2"
+    "nodemailer": "^6.7.2",
+    "npm-run-all": "^4.1.5"
   },
   "engines": {
     "node": "14.17.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "nodemon": "^2.0.14"
   }
 }
